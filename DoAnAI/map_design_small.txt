@@ -1,0 +1,17 @@
+TTTTTTTTTTTTTTTTT
+T   B       B   T
+T       H       T
+T    T  G  T    T
+TB             BT
+T  T  XX XX  T  T
+T    X     X    T
+T    X     X    T
+T HG         GH T
+T    X     X    T
+T    X     X    T
+T  T  XX XX  T  T
+TB             BT
+T    T  G  T    T
+T       H       T
+T   B       B   T
+TTTTTTTTTTTTTTTTT

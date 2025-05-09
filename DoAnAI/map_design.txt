@@ -1,0 +1,25 @@
+TTTTTTTTTTTTTTTTTTTTTTTTT
+T                       T
+T     B           B     T
+T     B           B     T
+T         H   H         T
+T      T    G    T      T
+T BB                 BB T
+T    T  XXXX XXXX  T    T
+T      X         X      T
+T      X         X      T
+T   H  X         X  H   T
+T      X         X      T
+T    G             G    T
+T      X         X      T
+T   H  X         X  H   T
+T      X         X      T
+T      X         X      T
+T    T  XXXX XXXX  T    T
+T BB                 BB T
+T      T    G    T      T
+T         H   H         T
+T     B           B     T
+T     B           B     T
+T                       T
+TTTTTTTTTTTTTTTTTTTTTTTTT
