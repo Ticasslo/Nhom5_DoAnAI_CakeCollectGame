@@ -65,7 +65,7 @@ Trong nhóm thuật toán này, hai thuật toán BFS và DFS được chọn l�
 - max_depth = 20.
 
 <div style="text-align: center;">
-  <img src="DOANAI/gif/Thêm file gif vào đây"/>
+  <img src="DOANAI/gif/BFS_time0.260979_steps196_1746893094"/>
 </div>
 
 ##### Depth-First Search (DFS):
@@ -74,7 +74,7 @@ Trong nhóm thuật toán này, hai thuật toán BFS và DFS được chọn l�
 - max_depth = 50.
 
 <div style="text-align: center;">
-  <img src="DOANAI/gif/Thêm file gif vào đây"/>
+  <img src="DOANAI/gif/DFS_time0.339515_steps1222_1746893214"/>
 </div>
 
 #### 2.2. Các thuật toán Tìm kiếm có thông tin (Informed Search Algorithms)
@@ -94,7 +94,7 @@ Trong nhóm thuật toán này, hai thuật toán BFS và DFS được chọn l�
 - max_depth = 20.
 
 <div style="text-align: center;">
-  <img src="DOANAI/gif/Thêm file gif vào đây"/>
+  <img src="DOANAI/gif/A_Star_time0.525429_steps192_1746893419"/>
 </div>
 
 #### 2.3. Các thuật toán Tìm kiếm cục bộ (Local Search Algorithms)
@@ -117,7 +117,7 @@ Trong đồ án, Simulated Annealing được sử dụng làm đại diện cho
 - max_depth = 50.
 
 <div style="text-align: center;">
-  <img src="DOANAI/gif/Thêm file gif vào đây"/>
+  <img src="DOANAI/gif/Simulated_Annealing_time0.218662_steps1034_1746893562"/>
 </div>
 
 #### 2.4. Các thuật toán Tìm kiếm trong môi trường phức tạp (Complex Environment)
@@ -140,7 +140,7 @@ Mỗi trạng thái là một nút trong cây AND-OR, có thể là OR-node (ch�
 - max_depth = 50
 
 <div style="text-align: center;">
-  <img src="DOANAI/gif/Thêm file gif vào đây"/>
+  <img src="DOANAI/gif/Nondeterministic_time5.207213_steps212_1746893722"/>
 </div>
 
 #### 2.5. Các thuật toán Tìm kiếm thỏa mãn ràng buộc (Constraint Satisfaction Problem)
@@ -165,7 +165,7 @@ Backtracking with Forward Checking là sự lựa chọn giúp làm tăng khả 
 - max_depth = 70
 
 <div style="text-align: center;">
-  <img src="DOANAI/gif/Thêm file gif vào đây"/>
+  <img src="DOANAI/gif/BTwForwardChecking_time0.633384_steps258_1746893799"/>
 </div>
 
 #### 2.6. Các thuật toán Tìm kiếm học tăng cường (Reinforcement Learning)
@@ -196,7 +196,7 @@ for episode in range(MAX_EPISODES):
 - max_depth = 20.
 
 <div style="text-align: center;">
-  <img src="DOANAI/gif/Thêm file gif vào đây"/>
+  <img src="DOANAI/gif/QLearning_time0.534476_steps544_1746893937"/>
 </div>
 
 #### 2.7. Chế độ AI Battle
