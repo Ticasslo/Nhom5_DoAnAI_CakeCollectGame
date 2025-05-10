@@ -7,7 +7,6 @@ from animations import AnimationManager
 from map_handler import load_map_from_file, place_random_objects
 from assets import load_assets, load_sounds
 
-# Khởi tạo pygame
 pygame.init()
 
 # --- CÀI ĐẶT MAP ---
@@ -18,7 +17,7 @@ INFO_HEIGHT = 120
 SCREEN_WIDTH = WIDTH
 SCREEN_HEIGHT = HEIGHT + INFO_HEIGHT
 
-# Quy tắc combo không thay đổi
+# Quy tắc combo
 COMBO_RULES = {
     0: (2, 200),
     1: (3, 300),
@@ -28,7 +27,6 @@ COMBO_RULES = {
 }
 BAG_SIZE = 7
 
-# Thêm vào phần khởi tạo pygame
 pygame.mixer.init()
 
 # --- KHỞI TẠO MÀN HÌNH ---
@@ -98,7 +96,7 @@ def draw_info(bag, score):
      # Vẽ nút hướng dẫn
     help_button.draw(screen)
 
-# Thêm biến để quản lý trạng thái của hướng dẫn
+# biến để quản lý trạng thái của hướng dẫn
 show_help = False
 
 # Tạo lớp Button để xử lý nút
@@ -131,7 +129,7 @@ class Button:
     def is_clicked(self, pos, click):
         return click and self.rect.collidepoint(pos)
 
-# Tạo một lớp để hiển thị hướng dẫn
+# hiển thị hướng dẫn
 class HelpScreen:
     def __init__(self, screen_width, screen_height):
         self.width = int(screen_width * 0.8)
@@ -242,7 +240,6 @@ class HelpScreen:
             
         return True  # Giữ hướng dẫn mở
 
-# Tạo nút hướng dẫn
 help_button = Button(SCREEN_WIDTH - 50, HEIGHT + INFO_HEIGHT - 50, 40, 40, "?", 36)
 help_screen = HelpScreen(SCREEN_WIDTH, SCREEN_HEIGHT)       
         

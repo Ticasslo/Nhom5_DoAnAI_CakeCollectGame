@@ -9,6 +9,10 @@ from searchNearestOnly import search_only_nearest
 from searchBFS import bfs_search
 from searchDFS import dfs_search
 from searchAStar import astar_search
+from searchSimulatedAnnealing import simulated_annealing_search
+from searchNondeterministic import nondeterministic_search
+from searchBacktrackingWithFowardChecking import backtracking_with_forward_checking
+from searchQLearning import qlearning_search
 from animations import AnimationManager
 from assets import load_assets, load_sounds
 from map_handler import load_map_from_file, place_random_objects
@@ -20,13 +24,13 @@ pygame.init()
 GRID_SIZE = 25             # Map thiết kế (25x25)
 TILE_SIZE = 22
 WIDTH, HEIGHT = TILE_SIZE * GRID_SIZE, TILE_SIZE * GRID_SIZE
-INFO_HEIGHT = 250  # Tăng chiều cao cho phần info để hiển thị thêm thông tin
+INFO_HEIGHT = 250 
 
 PANEL_WIDTH = 200
 SCREEN_WIDTH = WIDTH + PANEL_WIDTH * 3
 SCREEN_HEIGHT = HEIGHT + INFO_HEIGHT
 
-# Quy tắc combo không thay đổi
+# Quy tắc combo
 COMBO_RULES = {
     0: (2, 200),
     1: (3, 300),
@@ -36,7 +40,6 @@ COMBO_RULES = {
 }
 BAG_SIZE = 7
 
-# Thêm vào phần khởi tạo pygame
 pygame.mixer.init()
 
 # --- KHỞI TẠO MÀN HÌNH ---
@@ -48,7 +51,6 @@ clock = pygame.time.Clock()
 sound_assets = load_sounds()
 assets = load_assets(TILE_SIZE)
 
-# --- ĐỊNH NGHĨA CÁC MÀU SẮC CHO AI ---
 AI_COLORS = {
     0: (255, 100, 100),  # Đỏ
     1: (100, 255, 100),  # Xanh lá
@@ -87,10 +89,8 @@ def draw_map(map_tiles):
 
 def draw_player(x, y, ai_id):
     rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
-    # Vẽ ô nền của player trước
     screen.blit(assets["floor"], rect)
     
-    # Vẽ hình tròn với màu tương ứng với AI
     color = AI_COLORS[ai_id]
     pygame.draw.circle(
         screen, 
@@ -99,7 +99,6 @@ def draw_player(x, y, ai_id):
         TILE_SIZE // 2 - 2
     )
     
-    # Vẽ viền đen cho hình tròn
     pygame.draw.circle(
         screen, 
         (0, 0, 0), 
@@ -108,21 +107,19 @@ def draw_player(x, y, ai_id):
         2
     )
     
-    # Vẽ số AI ở giữa hình tròn
     font = pygame.font.SysFont(None, 20)
     text = font.render(str(ai_id + 1), True, (255, 255, 255))
     text_rect = text.get_rect(center=(x * TILE_SIZE + TILE_SIZE // 2, y * TILE_SIZE + TILE_SIZE // 2))
     screen.blit(text, text_rect)
 
 def draw_path(path, ai_id):
-    """Vẽ đường đi của AI"""
+    #Vẽ đường đi của AI
     if not path:
         return
         
     for _, pos in path:
         x, y = pos
         rect = pygame.Rect(x * TILE_SIZE + TILE_SIZE//4, y * TILE_SIZE + TILE_SIZE//4, TILE_SIZE//2, TILE_SIZE//2)
-        # Sử dụng màu tương ứng với AI
         color = list(AI_COLORS[ai_id])
         color.append(128)  # Thêm độ trong suốt
         pygame.draw.rect(screen, color, rect, border_radius=5)
@@ -195,16 +192,13 @@ class ScrollablePathPanel:
             self.path_steps.append(f"Step {i+1}: {direction} -> ({x},{y})")
         
     def draw(self, surface):
-        # Draw panel background
         pygame.draw.rect(surface, (240, 240, 240), self.rect)
         pygame.draw.rect(surface, (0, 0, 0), self.rect, 2)
         
-        # Draw title
         title = self.font.render("AI Path Steps", True, (0, 0, 0))
         title_rect = title.get_rect(center=(self.rect.centerx, self.rect.y + 15))
         surface.blit(title, title_rect)
         
-        # Create content area
         content_rect = pygame.Rect(
             self.rect.x + 5, 
             self.rect.y + 35, 
@@ -214,28 +208,23 @@ class ScrollablePathPanel:
         pygame.draw.rect(surface, (255, 255, 255), content_rect)
         pygame.draw.rect(surface, (200, 200, 200), content_rect, 1)
         
-        # Create clipping area for text
         content_surface = pygame.Surface((content_rect.width, content_rect.height))
         content_surface.fill((255, 255, 255))
         
-        # Draw path steps
         max_scroll = max(0, len(self.path_steps) * self.line_height - content_rect.height)
         self.scroll_y = min(self.scroll_y, max_scroll)
         
         for i, step in enumerate(self.path_steps):
             y_pos = i * self.line_height - self.scroll_y + 2
             if -self.line_height <= y_pos < content_rect.height:
-                # Use blue color for the time line
                 if i == 0:  # First line is the time
                     text = self.font.render(step, True, (0, 0, 150))
                 else:
                     text = self.font.render(step, True, (0, 0, 0))
                 content_surface.blit(text, (5, y_pos))
         
-        # Draw content with clipping
         surface.blit(content_surface, content_rect)
         
-        # Draw scrollbar if needed
         if len(self.path_steps) * self.line_height > content_rect.height:
             scrollbar_rect = pygame.Rect(
                 self.rect.right - self.scrollbar_width - 5,
@@ -245,7 +234,6 @@ class ScrollablePathPanel:
             )
             pygame.draw.rect(surface, (220, 220, 220), scrollbar_rect)
             
-            # Calculate thumb size and position
             visible_ratio = min(1.0, content_rect.height / (len(self.path_steps) * self.line_height))
             thumb_height = max(20, int(scrollbar_rect.height * visible_ratio))
             
@@ -271,7 +259,7 @@ class ScrollablePathPanel:
             elif event.button == 5:  # Scroll down
                 self.scroll_y += self.line_height
                 return True
-            elif event.button == 1:  # Left click for scrollbar dragging
+            elif event.button == 1:  # scrollbar dragging
                 scrollbar_rect = pygame.Rect(
                     self.rect.right - self.scrollbar_width - 5,
                     self.rect.y + 35,
@@ -415,7 +403,7 @@ speed_options = ["Slow", "Normal", "Fast", "Instant"]
 game_speed_dropdown = DropdownMenu(370, HEIGHT + 190, 100, 40, speed_options)
 
 # Dropdown cho thuật toán của từng AI
-ai_algo_options = ["No play","Nearest", "BFS", "DFS", "A*"]
+ai_algo_options = ["No play","Nearest", "BFS", "DFS", "A_Star", "Simulated_Annealing", "Nondeterministic", "BTwForwardChecking", "QLearning"]
 # Thay đổi vị trí X cho mỗi dropdown
 ai_algorithm_dropdowns = [
     DropdownMenu(550 + i * 100, HEIGHT + 18 + i * 60, 170, 40, ai_algo_options) for i in range(3)
@@ -530,7 +518,6 @@ def calculate_ai_path(ai_id):
     # Lấy vị trí hiện tại của AI
     x, y = player_positions[ai_id]
     
-    # Start timing the algorithm
     start_time = time.time()
     
     # Gọi hàm tìm đường dựa trên thuật toán được chọn
@@ -540,10 +527,17 @@ def calculate_ai_path(ai_id):
         path = bfs_search(map_copy, (x, y), bags[ai_id])
     elif algorithm == "DFS":
         path = dfs_search(map_copy, (x, y), bags[ai_id])
-    elif algorithm == "A*":
+    elif algorithm == "A_Star":
         path = astar_search(map_copy, (x, y), bags[ai_id])
+    elif algorithm == "Simulated_Annealing":
+        path = simulated_annealing_search(map_copy, (x, y), bags[ai_id])
+    elif algorithm == "Nondeterministic":
+        path = nondeterministic_search(map_copy, (x, y), bags[ai_id])
+    elif algorithm == "BTwForwardChecking":
+        path = backtracking_with_forward_checking(map_copy, (x, y), bags[ai_id])
+    elif algorithm == "QLearning":
+        path = qlearning_search(map_copy, (x, y), bags[ai_id])
     
-    # End timing and add to the total thinking time for this AI
     end_time = time.time()
     calculation_time = end_time - start_time
     
@@ -716,20 +710,24 @@ while running:
                     # Kiểm tra mục tiêu còn tồn tại không
                     if len(ai_paths[ai_id]) > current_path_indices[ai_id] + 1:
                         _, (target_x, target_y) = ai_paths[ai_id][-1]
-                        if (isinstance(map_tiles[target_y][target_x], int) == False and map_tiles[target_y][target_x] == " "):
-                            # Vật phẩm đã bị nhặt, cần tính toán lại đường đi
-                            # Vật phẩm đã bị nhặt, thêm animation “Object Stolen!” dưới path panel của AI này
-                            animation_manager.add_text_animation(
-                                "Object Got Stolen!",
-                                path_panels[ai_id].rect.x + 18,         # căn lề trái trong panel
-                                path_panels[ai_id].rect.height - 20,    # cách đáy panel Y px
-                                color=(255, 0, 0),                      # màu đỏ nổi bật
-                                duration=3000,                          # hiển thị 3 giây
-                                speed=1.5,                              # tốc độ di chuyển nhẹ
-                                font_size=24                            # kích thước chữ
-                            )
-                            calculate_ai_path(ai_id)
-                            continue
+                        # Chỉ kiểm tra nếu thuật toán không phải Simulated Annealing hoặc Q-learning
+                        algorithm = ai_algorithm_dropdowns[ai_id].get_selected()
+                        if algorithm not in ["Simulated_Annealing", "QLearning"]:
+                            # Kiểm tra nếu vị trí cuối cùng dự kiến chứa vật phẩm thì nó đã bị lấy chưa
+                            if (isinstance(map_tiles[target_y][target_x], int) == False and map_tiles[target_y][target_x] == " "):
+                                # Vật phẩm đã bị nhặt, cần tính toán lại đường đi
+                                # Vật phẩm đã bị nhặt, thêm animation "Object Stolen!" dưới path panel của AI này
+                                animation_manager.add_text_animation(
+                                    "Object Got Stolen!",
+                                    path_panels[ai_id].rect.x + 18,         # căn lề trái trong panel
+                                    path_panels[ai_id].rect.height - 20,    # cách đáy panel Y px
+                                    color=(255, 0, 0),                      # màu đỏ nổi bật
+                                    duration=3000,                          # hiển thị 3 giây
+                                    speed=1.5,                              # tốc độ di chuyển nhẹ
+                                    font_size=24                            # kích thước chữ
+                                )
+                                calculate_ai_path(ai_id)
+                                continue
                     # Lưu lại ý định di chuyển
                     intended_moves.append((ai_id, new_x, new_y))
         
@@ -848,6 +846,5 @@ while running:
     # Cập nhật màn hình
     pygame.display.flip()
 
-# Thoát pygame khi kết thúc
 pygame.quit()
 sys.exit()

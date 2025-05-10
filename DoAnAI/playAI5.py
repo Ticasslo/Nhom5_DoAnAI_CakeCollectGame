@@ -20,7 +20,6 @@ from assets import load_assets, load_sounds
 from map_handler import load_map_from_file, place_random_objects
 
 
-# Khởi tạo pygame
 pygame.init()
 
 # --- CÀI ĐẶT MAP ---
@@ -34,7 +33,7 @@ PATH_PANEL_WIDTH = 500
 SCREEN_WIDTH = WIDTH + PANEL_WIDTH + PATH_PANEL_WIDTH
 SCREEN_HEIGHT = HEIGHT + INFO_HEIGHT
 
-# Quy tắc combo không thay đổi
+# Quy tắc combo
 COMBO_RULES = {
     0: (2, 200),
     1: (3, 300),
@@ -44,7 +43,6 @@ COMBO_RULES = {
 }
 BAG_SIZE = 7
 
-# Thêm vào phần khởi tạo pygame
 pygame.mixer.init()
 
 # --- KHỞI TẠO MÀN HÌNH ---
@@ -188,16 +186,13 @@ class ScrollablePathPanel:
             self.path_steps.append(f"Step {i+1}: {direction} -> ({x},{y})")
         
     def draw(self, surface):
-        # Draw panel background
         pygame.draw.rect(surface, (240, 240, 240), self.rect)
         pygame.draw.rect(surface, (0, 0, 0), self.rect, 2)
         
-        # Draw title
         title = self.font.render("AI Path Steps", True, (0, 0, 0))
         title_rect = title.get_rect(center=(self.rect.centerx, self.rect.y + 15))
         surface.blit(title, title_rect)
         
-        # Create content area
         content_rect = pygame.Rect(
             self.rect.x + 5, 
             self.rect.y + 35, 
@@ -207,11 +202,9 @@ class ScrollablePathPanel:
         pygame.draw.rect(surface, (255, 255, 255), content_rect)
         pygame.draw.rect(surface, (200, 200, 200), content_rect, 1)
         
-        # Create clipping area for text
         content_surface = pygame.Surface((content_rect.width, content_rect.height))
         content_surface.fill((255, 255, 255))
         
-        # Draw path steps
         max_scroll = max(0, len(self.path_steps) * self.line_height - content_rect.height)
         self.scroll_y = min(self.scroll_y, max_scroll)
         
@@ -224,10 +217,8 @@ class ScrollablePathPanel:
                     text = self.font.render(step, True, (0, 0, 0))
                 content_surface.blit(text, (5, y_pos))
         
-        # Draw content with clipping
         surface.blit(content_surface, content_rect)
         
-        # Draw scrollbar if needed
         if len(self.path_steps) * self.line_height > content_rect.height:
             scrollbar_rect = pygame.Rect(
                 self.rect.right - self.scrollbar_width - 5,
@@ -237,7 +228,6 @@ class ScrollablePathPanel:
             )
             pygame.draw.rect(surface, (220, 220, 220), scrollbar_rect)
             
-            # Calculate thumb size and position
             visible_ratio = min(1.0, content_rect.height / (len(self.path_steps) * self.line_height))
             thumb_height = max(20, int(scrollbar_rect.height * visible_ratio))
             
@@ -284,7 +274,6 @@ class ScrollablePathPanel:
             visible_height = self.rect.height - 40
             
             if content_height > visible_height:
-                # Calculate relative position and set scroll
                 rel_y = event.pos[1] - (self.rect.y + 35)
                 scroll_ratio = rel_y / visible_height
                 self.scroll_y = int(scroll_ratio * (content_height - visible_height))
@@ -294,91 +283,69 @@ class ScrollablePathPanel:
         return False
   
 class PathVisualizationPanel:
-    """
-    A panel to visualize the AI path as a map overlay.
-    Each node shows its position on a minimap version of the actual game map.
-    Uses the exact grid size and displays the legend vertically below the map.
-    """
     def __init__(self, x, y, width, height, font_size=16):
         self.rect = pygame.Rect(x, y, width, height)
         self.font = pygame.font.SysFont(None, font_size)
         self.path = []
         self.current_index = 0
-        self.node_radius = 10  # Slightly smaller radius to fit grid
+        self.node_radius = 10
         self.font_node = pygame.font.SysFont(None, 15)  # Font nhỏ hơn cho chữ trong node
 
-        # Space for legend at the bottom
         self.legend_height = 100
         
-        # Calculate margins to center the minimap
         self.map_margin_x = 10  # Left margin for minimap
         self.map_margin_y = 40  # Top margin for minimap
         
-        # Available space for minimap (accounting for title, margins, and legend)
         self.minimap_width = width - 2 * self.map_margin_x
         self.minimap_height = height - self.map_margin_y - self.legend_height
         
-        # Calculate cell size to maintain proper grid ratio
         self.cell_size = min(self.minimap_width / GRID_SIZE, self.minimap_height / GRID_SIZE)
         
-        # Recalculate actual minimap dimensions
         self.minimap_width = self.cell_size * GRID_SIZE
         self.minimap_height = self.cell_size * GRID_SIZE
         
     def set_path(self, path):
-        """Set a new path. `path` is a list of (direction, (x, y)) tuples."""
         self.path = path
         self.current_index = 0
         
     def update(self, current_index):
-        """Update the panel with the current path index."""
         self.current_index = current_index
 
     def draw(self, surface):
-        # Draw panel background and border
         pygame.draw.rect(surface, (240, 240, 240), self.rect)
         pygame.draw.rect(surface, (0, 0, 0), self.rect, 2)
 
-        # Draw title
         title = self.font.render("Path Visualization (Map View)", True, (0, 0, 0))
         surface.blit(title, (self.rect.x + 10, self.rect.y + 10))
 
-        # Calculate minimap area with centering
-        # Center horizontally
         minimap_x = self.rect.x + (self.rect.width - self.minimap_width) // 2
         minimap_y = self.rect.y + self.map_margin_y
         minimap_rect = pygame.Rect(minimap_x, minimap_y, self.minimap_width, self.minimap_height)
         
-        # Draw minimap background
         pygame.draw.rect(surface, (220, 220, 220), minimap_rect)
         pygame.draw.rect(surface, (0, 0, 0), minimap_rect, 1)
         
-        # Draw grid lines
         for i in range(GRID_SIZE + 1):
-            # Vertical lines
             line_x = minimap_x + i * self.cell_size
             pygame.draw.line(surface, (200, 200, 200), 
                             (line_x, minimap_y), 
                             (line_x, minimap_y + self.minimap_height))
             
-            # Horizontal lines
             line_y = minimap_y + i * self.cell_size
             pygame.draw.line(surface, (200, 200, 200), 
                             (minimap_x, line_y), 
                             (minimap_x + self.minimap_width, line_y))
         
-        # Draw obstacle markers (X) on walls
+        # Các vật cản là XX
         for y_map in range(GRID_SIZE):
             for x_map in range(GRID_SIZE):
-                # Check if this cell is a wall/obstacle
+                # kiểm tra xem có phải vật cảncản
                 if (0 <= y_map < len(map_tiles) and 0 <= x_map < len(map_tiles[0]) and 
                     map_tiles[y_map][x_map] in ["T", "W", "X", "B", "H", "G"]):
-                    # Convert map coordinates to minimap coordinates
                     node_x = minimap_x + x_map * self.cell_size + self.cell_size/2
                     node_y = minimap_y + y_map * self.cell_size + self.cell_size/2
                     
-                    # Draw an X
-                    x_size = self.cell_size * 0.1  # Size of X relative to cell
+                    x_size = self.cell_size * 0.1
                     pygame.draw.line(surface, (0, 0, 0), 
                                 (node_x - x_size, node_y - x_size), 
                                 (node_x + x_size, node_y + x_size), 2)
@@ -386,20 +353,16 @@ class PathVisualizationPanel:
                                 (node_x + x_size, node_y - x_size), 
                                 (node_x - x_size, node_y + x_size), 2)
             
-        # Draw path nodes
         if self.path:
-            # First, draw lines connecting path nodes
             for i in range(1, len(self.path)):
                 prev_pos = self.path[i-1][1]
                 curr_pos = self.path[i][1]
                 
-                # Convert map positions to minimap coordinates
                 prev_x = minimap_x + prev_pos[0] * self.cell_size + self.cell_size/2
                 prev_y = minimap_y + prev_pos[1] * self.cell_size + self.cell_size/2
                 curr_x = minimap_x + curr_pos[0] * self.cell_size + self.cell_size/2
                 curr_y = minimap_y + curr_pos[1] * self.cell_size + self.cell_size/2
                 
-                # Determine line color based on current position
                 if i <= self.current_index:
                     line_color = (100, 200, 100)  # Green for visited path
                 else:
@@ -407,9 +370,7 @@ class PathVisualizationPanel:
                     
                 pygame.draw.line(surface, line_color, (prev_x, prev_y), (curr_x, curr_y), 2)
             
-            # Then, draw the nodes themselves
             for i, (direction, pos) in enumerate(self.path):
-                # Convert map position to minimap coordinates
                 node_x = minimap_x + pos[0] * self.cell_size + self.cell_size/2
                 node_y = minimap_y + pos[1] * self.cell_size + self.cell_size/2
                 
@@ -423,7 +384,6 @@ class PathVisualizationPanel:
                 else:
                     color = (200, 200, 200)  # Gray for future positions
                     
-                # Check if the node represents a combo item
                 x, y_map = pos
                 if 0 <= y_map < len(map_tiles) and 0 <= x < len(map_tiles[0]):
                     tile = map_tiles[y_map][x]
@@ -481,7 +441,6 @@ class PathVisualizationPanel:
                     (legend_x4 + 25, legend_y + 25 - 8))
 
             
-# Tạo lớp Button để xử lý nút bấm
 class Button:
     def __init__(self, x, y, width, height, text, font_size=24, color=(200, 200, 200), hover_color=(180, 180, 220)):
         self.rect = pygame.Rect(x, y, width, height)
@@ -523,7 +482,7 @@ class DropdownMenu:
         self.is_opened = False
         self.option_height = height
         
-        # Tính toán chiều cao khi menu mở (không cần thiết dùng biến này nếu không sử dụng trong draw)
+        # Tính toán chiều cao khi menu mở
         self.expanded_rect = pygame.Rect(x, y - height * len(options), width, height * len(options))
     
     def draw(self, surface):
@@ -537,7 +496,7 @@ class DropdownMenu:
         text_rect = text_surf.get_rect(center=self.rect.center)
         surface.blit(text_surf, text_rect)
         
-        # Vẽ mũi tên chỉ menu mở lên (giờ các mục sẽ hiển thị phía trên)
+        # Vẽ mũi tên chỉ menu mở lên
         arrow_points = [
             (self.rect.right - 20, self.rect.centery + 3),
             (self.rect.right - 10, self.rect.centery + 3),
@@ -602,7 +561,7 @@ ai_buttons = {
 ai_speed_options = ["Slow", "Normal", "Fast", "Instant"]
 ai_speed_dropdown = DropdownMenu(370, HEIGHT + 90, 100, 40, ai_speed_options)
 
-ai_algo_options = ["BFS", "DFS", "A*", "Simulated Annealing", "Nondeterministic", "Backtracking with Forward Checking", "Q-learning"]
+ai_algo_options = ["BFS", "DFS", "A_Star", "Simulated_Annealing", "Nondeterministic", "BTwForwardChecking", "QLearning"]
 ai_algo_dropdown = DropdownMenu(480, HEIGHT + 90, 170, 40, ai_algo_options)
 
 map_options = ["Map 1", "Map 2", "Map 3"]
@@ -735,18 +694,16 @@ def calculate_ai_path():
     if algorithm == "BFS":
         path = bfs_search(map_copy, (player_x, player_y), bag)
     elif algorithm == "DFS":
-        # Giả sử bạn đã có một hàm dfs tìm đường
         path = dfs_search(map_copy, (player_x, player_y), bag)
-    elif algorithm == "A*":
-        # Giả sử bạn đã có một hàm A* tìm đường
+    elif algorithm == "A_Star":
         path = astar_search(map_copy, (player_x, player_y), bag)
-    elif algorithm == "Simulated Annealing":
+    elif algorithm == "Simulated_Annealing":
         path = simulated_annealing_search(map_copy, (player_x, player_y), bag)
     elif algorithm == "Nondeterministic":
         path = nondeterministic_search(map_copy, (player_x, player_y), bag)
-    elif algorithm == "Backtracking with Forward Checking":
+    elif algorithm == "BTwForwardChecking":
         path = backtracking_with_forward_checking(map_copy, (player_x, player_y), bag)
-    elif algorithm == "Q-learning":
+    elif algorithm == "QLearning":
         path = qlearning_search(map_copy, (player_x, player_y), bag)
         
     # Tính thời gian và cộng vào tổng
@@ -920,7 +877,7 @@ def save_gif_thread(local_frames):
         recording_status = None
 
 def open_saved_gif():
-    # Lưu trạng thái game hiện tại (nếu cần)
+    # Lưu trạng thái game hiện tại
     pygame.display.quit()  # Đóng cửa sổ hiện tại
     
     # Chạy chương trình savedGIF.py
@@ -1123,8 +1080,8 @@ while running:
                 pass
         
         
-        # Chụp hình nếu đã đi được 5 bước từ lần chụp cuối
-        if steps_since_last_capture >= 5:
+        # Chụp hình nếu đã đi được 3 bước từ lần chụp cuối
+        if steps_since_last_capture >= 3:
             need_capture = True
         
         # Nếu cần chụp hình thì thực hiện và reset bộ đếm

@@ -4,7 +4,6 @@ import subprocess  # For launching the game file
 import os
 import threading
 
-# Initialize pygame
 pygame.init()
 pygame.mixer.init()
 
@@ -29,7 +28,6 @@ DARK_ORANGE = (255, 140, 0)
 title_font = pygame.font.SysFont(None, 80)
 button_font = pygame.font.SysFont(None, 50)
 
-# Button class
 class Button:
     def __init__(self, x, y, width, height, text, font, color=(200, 200, 200), hover_color=(180, 180, 220)):
         self.rect = pygame.Rect(x, y, width, height)
@@ -40,12 +38,10 @@ class Button:
         self.hover = False
         
     def draw(self, surface):
-        # Draw button with hover effect
         current_color = self.hover_color if self.hover else self.color
         pygame.draw.rect(surface, current_color, self.rect, border_radius=10)
         pygame.draw.rect(surface, BLACK, self.rect, 2, border_radius=10)  # Border
         
-        # Draw text
         text_surf = self.font.render(self.text, True, BLACK)
         text_rect = text_surf.get_rect(center=self.rect.center)
         surface.blit(text_surf, text_rect)
@@ -76,7 +72,6 @@ def load_image(filename, size=(100, 100)):
 
 # Hàm hiển thị cửa sổ Credit
 def display_credits(screen):
-    # Tạo một surface cho cửa sổ Credit
     credit_surf = pygame.Surface((550, 600))
     credit_surf.fill(WHITE)
     pygame.draw.rect(credit_surf, BLACK, (0, 0, 550, 600), 2)
@@ -152,8 +147,6 @@ def play_video_demo():
         print(f"Lỗi khi phát video: {e}")
         
         
-
-# Load background image if available
 def load_background():
     try:
         bg_img = pygame.image.load("menu_background.png").convert()
@@ -161,7 +154,6 @@ def load_background():
         return bg_img
     except Exception as e:
         print(f"Could not load background image: {e}")
-        # Create a gradient background if image not available
         bg = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
         for y in range(SCREEN_HEIGHT):
             # Create a gradient from light blue to white
@@ -169,9 +161,7 @@ def load_background():
             pygame.draw.line(bg, (color_value, color_value, 255), (0, y), (SCREEN_WIDTH, y))
         return bg
 
-# Main menu function
 def main_menu():
-    # Create buttons
     buttons = {
         "play": Button(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 250, 200, 70, "Play", button_font, LIGHT_BLUE, DARK_BLUE),
         "playai": Button(SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 165, 200, 70, "Play AI", button_font, LIGHT_GREEN, DARK_GREEN),
@@ -180,10 +170,8 @@ def main_menu():
         "credit": Button(SCREEN_WIDTH//2 - 50, SCREEN_HEIGHT - 50, 100, 40, "Credit", pygame.font.SysFont(None, 30), LIGHT_BLUE, DARK_BLUE),
     }
     
-    # Load background
     background = load_background()
     
-    # Main menu loop
     running = True
     clock = pygame.time.Clock()
     show_credits = False
@@ -200,10 +188,8 @@ def main_menu():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_click = True
         
-        # Draw background
         screen.blit(background, (0, 0))
         
-        # Draw title with black outline
         title_text = title_font.render("CAKE COLLECT GAME", True, WHITE)
         title_border = title_font.render("CAKE COLLECT GAME", True, BLACK)
         title_rect = title_text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//4 - 105))
@@ -257,16 +243,12 @@ def main_menu():
                 
         pygame.display.flip()
 
-# Function to start the game
 def start_game():
     try:
-        # Save current screen state to restore it later
         pygame.display.quit()
         
-        # Run the game script
         subprocess.run([sys.executable, "main.py"], check=True)
         
-        # Reinitialize pygame for the menu
         pygame.init()
         pygame.mixer.init()
         global screen
@@ -278,16 +260,12 @@ def start_game():
         pygame.quit()
         sys.exit()
 
-# Function to start the AI game
 def start_ai_game():
     try:
-        # Save current screen state to restore it later
         pygame.display.quit()
         
-        # Run the AI game script
         subprocess.run([sys.executable, "playAI5.py"], check=True)
         
-        # Reinitialize pygame for the menu
         pygame.init()
         pygame.mixer.init()
         global screen
@@ -299,16 +277,12 @@ def start_ai_game():
         pygame.quit()
         sys.exit()
 
-# Function to start the Battle AI game
 def start_battle_ai():
     try:
-        # Save current screen state to restore it later
         pygame.display.quit()
         
-        # Run the Battle AI game script
         subprocess.run([sys.executable, "battleAI.py"], check=True)
         
-        # Reinitialize pygame for the menu
         pygame.init()
         pygame.mixer.init()
         global screen
@@ -320,6 +294,5 @@ def start_battle_ai():
         pygame.quit()
         sys.exit()
 
-# Run the menu
 if __name__ == "__main__":
     main_menu()

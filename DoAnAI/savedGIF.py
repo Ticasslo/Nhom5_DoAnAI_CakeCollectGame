@@ -17,7 +17,7 @@ class GifViewer:
         self.font = pygame.font.SysFont(None, 28)
         self.small_font = pygame.font.SysFont(None, 21)
         
-        self.algorithms = ["Compare", "BFS", "DFS", "A*"]  # Các thuật toán hỗ trợ
+        self.algorithms = ["Compare", "BFS", "DFS", "A_Star", "Simulated_Annealing", "Nondeterministic", "BTwForwardChecking", "QLearning"]  # Các thuật toán hỗ trợ
         self.current_algo_index = 0
         
         self.gif_frames = {}      # Lưu các frame của GIF

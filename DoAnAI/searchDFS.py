@@ -1,6 +1,21 @@
 from collections import deque
 
 # --- CẤU TRÚC VÀ KHÁI NIỆM ---
+# Mỗi trạng thái được mô tả bởi:
+#   - pos: vị trí người chơi (x, y)
+#   - bag: tuple các vật phẩm hiện có trong túi (giữ thứ tự theo hàng đợi)
+#   - objects: frozenset các vị trí (x, y) trên map còn chứa vật phẩm
+#
+# Không gian trạng thái ban đầu (S0):
+#   - pos = start_pos (từ game hiện tại)
+#   - bag = tuple(bag hiện tại)
+#   - objects = tập tất cả tọa độ ô chứa int trong map_tiles
+#
+# Không gian trạng thái kết thúc (goal):
+#   - Trong khi tìm combo: xuất hiện một combo hợp lệ (theo COMBO_RULES và số ô trống)
+#     tức là bag mới chứa segment liên tiếp đúng loại và đúng số lượng.
+#   - Nếu không tìm được combo trong max_depth, ta fallback sang nhặt vật gần nhất.
+
 COMBO_RULES = {
     0: (2, 200),
     1: (3, 300),

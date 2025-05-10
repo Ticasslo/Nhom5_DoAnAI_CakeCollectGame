@@ -5,17 +5,17 @@ T     B           B     T
 T         H   H         T
 T      T    G    T      T
 T BB                 BB T
-T    T  XXXX XXXX  T    T
+T    T  XXX   XXX  T    T
 T      X         X      T
 T      X         X      T
 T   H  X         X  H   T
-T      X         X      T
+T                       T
 T    G             G    T
-T      X         X      T
+T                       T
 T   H  X         X  H   T
 T      X         X      T
 T      X         X      T
-T    T  XXXX XXXX  T    T
+T    T  XXX   XXX  T    T
 T BB                 BB T
 T      T    G    T      T
 T         H   H         T

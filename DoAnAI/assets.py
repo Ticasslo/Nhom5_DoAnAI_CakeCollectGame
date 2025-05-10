@@ -2,11 +2,7 @@ import pygame
 import sys
 
 def load_assets(TILE_SIZE):
-    """
-    Tải tất cả các tài nguyên hình ảnh cho game
-    Tham số:
-        TILE_SIZE: Kích thước của mỗi ô trong game
-    """
+    #TILE_SIZE: Kích thước của mỗi ô trong game
     assets = {}
     # Ảnh nhân vật
     try:
@@ -25,7 +21,6 @@ def load_assets(TILE_SIZE):
         floor_img.fill((255, 255, 255))
     assets["floor"] = pygame.transform.scale(floor_img, (TILE_SIZE, TILE_SIZE))
     
-    # Tải ảnh tường theo kiểu do designer chọn
     assets["wall"] = {}
     wall_files = {
         "T": "tree.png",  # Nếu designer ghi "T" thì dùng ảnh cây
@@ -71,9 +66,6 @@ def load_assets(TILE_SIZE):
     return assets
 
 def load_sounds():
-    """
-    Tải tất cả các tài nguyên âm thanh cho game
-    """
     sounds = {}
     try:
         # Âm thanh khi nhặt vật phẩm

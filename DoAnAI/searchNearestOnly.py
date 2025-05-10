@@ -1,5 +1,7 @@
 import heapq
 from collections import deque
+#Thuật toán này ko theo logic nhặt vật phẩm theo combo mà chỉ lấy vật phẩm bất kì gần nhất mà thôi
+#Biểu thị cho một người chơi không thành thạo quy tắc chơi game
 
 def search_only_nearest(map_data, start_pos):
     """
