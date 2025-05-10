@@ -72,7 +72,7 @@ Trong nhóm thuật toán này, hai thuật toán BFS và DFS được chọn l�
 - max_depth = 20.
 
 <div style="text-align: center;">
-  <img src="DoAnAI/gif/BFS_time0.260979_steps196_1746893094"/>
+  <img src="DoAnAI/gif/BFS_time0.260979_steps196_1746893094.gif"/>
 </div>
 
 ##### Depth-First Search (DFS):
@@ -82,7 +82,7 @@ Trong nhóm thuật toán này, hai thuật toán BFS và DFS được chọn l�
 - max_depth = 50.
 
 <div style="text-align: center;">
-  <img src="DoAnAI/gif/DFS_time0.339515_steps1222_1746893214"/>
+  <img src="DoAnAI/gif/DFS_time0.339515_steps1222_1746893214.gif"/>
 </div>
 
 #### 2.2. Các thuật toán Tìm kiếm có thông tin (Informed Search Algorithms)
@@ -104,7 +104,7 @@ Trong nhóm thuật toán này, hai thuật toán BFS và DFS được chọn l�
 - max_depth = 20.
 
 <div style="text-align: center;">
-  <img src="DoAnAI/gif/A_Star_time0.525429_steps192_1746893419"/>
+  <img src="DoAnAI/gif/A_Star_time0.525429_steps192_1746893419.gif"/>
 </div>
 
 #### 2.3. Các thuật toán Tìm kiếm cục bộ (Local Search Algorithms)
@@ -130,7 +130,7 @@ Trong đồ án, Simulated Annealing được sử dụng làm đại diện cho
 - max_depth = 50.
 
 <div style="text-align: center;">
-  <img src="DoAnAI/gif/Simulated_Annealing_time0.218662_steps1034_1746893562"/>
+  <img src="DoAnAI/gif/Simulated_Annealing_time0.218662_steps1034_1746893562.gif"/>
 </div>
 
 #### 2.4. Các thuật toán Tìm kiếm trong môi trường phức tạp (Complex Environment)
@@ -155,7 +155,7 @@ Trong đồ án, Simulated Annealing được sử dụng làm đại diện cho
 - max_depth = 50
 
 <div style="text-align: center;">
-  <img src="DoAnAI/gif/Nondeterministic_time5.207213_steps212_1746893722"/>
+  <img src="DoAnAI/gif/Nondeterministic_time5.207213_steps212_1746893722.gif"/>
 </div>
 
 #### 2.5. Các thuật toán Tìm kiếm thỏa mãn ràng buộc (Constraint Satisfaction Problem)
@@ -182,7 +182,7 @@ Backtracking with Forward Checking là sự lựa chọn giúp làm tăng khả 
 - max_depth = 70
 
 <div style="text-align: center;">
-  <img src="DoAnAI/gif/BTwForwardChecking_time0.633384_steps258_1746893799"/>
+  <img src="DoAnAI/gif/BTwForwardChecking_time0.633384_steps258_1746893799.gif"/>
 </div>
 
 #### 2.6. Các thuật toán Tìm kiếm học tăng cường (Reinforcement Learning)
@@ -217,7 +217,7 @@ for episode in range(MAX_EPISODES):
 - max_depth = 20.
 
 <div style="text-align: center;">
-  <img src="DoAnAI/gif/QLearning_time0.534476_steps544_1746893937"/>
+  <img src="DoAnAI/gif/QLearning_time0.534476_steps544_1746893937.gif"/>
 </div>
 
 #### 2.7. Chế độ AI Battle
