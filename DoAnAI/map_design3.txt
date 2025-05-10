@@ -1,25 +1,25 @@
 TTTTTTTTTTTTTTTTTTTTTTTTT
-T                       T
-T      B    W    B      T
-T     B           B     T
+T           T           T
+T TT   B    W    B   TT T
+T T   B   H   H   B   T T
 T         H   H         T
 T      T    G    T      T
-T  B                 B  T
+T  B T             T B  T
 T B   T   XX XX   T   B T
-T                       T
-T      X         X      T
+T          X X          T
+T HH   XX       XX   HH T
 T   H  X    X    X  H   T
-T      X         X      T
-T    G             G    T
-T      X         X      T
+T           X           T
+T T GG   XX   XX   GG T T
 T      X    X    X      T
-T     WX         XW     T
-T                       T
-T    T    XX XX    T    T
-T  B                 B  T
+T  X   XX   X   XX   X  T
+T X   WX         XW   X T
+T          X X          T
+T    T T  XX XX  T T    T
+T  B  T           T  B  T
 T  B   T    G    T   B  T
-T         H   H         T
-T     B           B     T
-T    B             B    T
+T    B    H   H    B    T
+T  T  B   H   H   B  T  T
+T T  B  TT  X  TT  B  T T
 T           X           T
 TTTTTTTTTTTTTTTTTTTTTTTTT

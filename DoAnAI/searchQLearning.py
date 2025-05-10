@@ -25,7 +25,7 @@ COMBO_RULES = {
 BAG_SIZE = 7
 
 # Tên file để lưu Q-table
-Q_TABLE_FILE = "qtable16_path.pkl"
+Q_TABLE_FILE = "qtable17_path.pkl"
 
 # Thu nhỏ không gian trạng thái
 def get_state_key(pos, map_tiles, last_item_type):
@@ -575,7 +575,7 @@ def train_agent(map_tiles, num_episodes=1000, max_steps=500, save_interval=1000)
                     plt.ylabel('Avg Reward')
                     
                     plt.tight_layout()
-                    plt.savefig('qlearning_progress16.png')
+                    plt.savefig('qlearning_progress17.png')
                     plt.close()
                     
                     # Vẽ biểu đồ Q-values
@@ -587,7 +587,7 @@ def train_agent(map_tiles, num_episodes=1000, max_steps=500, save_interval=1000)
                         plt.xlabel('Episode (sampled)')
                         plt.ylabel('Q-value')
                         plt.legend()
-                        plt.savefig('qlearning_qvalues16.png')
+                        plt.savefig('qlearning_qvalues17.png')
                         plt.close()
                         
                     print("Đã lưu biểu đồ tiến trình")
@@ -615,8 +615,8 @@ def train_agent(map_tiles, num_episodes=1000, max_steps=500, save_interval=1000)
         plt.ylabel('Avg Reward')
         
         plt.tight_layout()
-        plt.savefig('qlearning_rewards16.png')
-        print("Đã lưu biểu đồ rewards vào qlearning_rewards16.png")
+        plt.savefig('qlearning_rewards17.png')
+        print("Đã lưu biểu đồ rewards vào qlearning_rewards17.png")
     except ImportError:
         print("Không thể vẽ biểu đồ rewards (matplotlib không được cài đặt)")
     
