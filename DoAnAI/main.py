@@ -199,7 +199,7 @@ class HelpScreen:
         text_y += 30
         
         # Vẽ ví dụ mô phỏng túi đồ với combo
-        example_bag = [2, 0, 0, 1, 1 ,1]
+        example_bag = [2, 4, 4, 1, 1 ,1]
         bag_text = self.font_text.render("Bag before combo:", True, (0, 0, 0))
         surface.blit(bag_text, (self.x + 30, text_y))
         

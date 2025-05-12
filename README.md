@@ -1,6 +1,8 @@
 # Nhom5_DoAnAI_CakeCollectGame
 
 Đồ Án môn Trí tuệ nhân tạo - HKII - 2024 - 2025
+23110327 - Huỳnh Ngọc Thắng
+23110203 - Phạm Trần Thiên Đăng
 
 ## MỤC LỤC
 
@@ -247,6 +249,10 @@ for episode in range(MAX_EPISODES):
   - Tìm kiếm có định hướng: A\*.
   - Tìm kiếm thỏa mãn ràng buộc: Backtracking with Forward Checking.
   - Học tăng cường: Q‑Learning.
+
+<div style="text-align: center;">
+  <img src="DoAnAI/gif/SoSanh.png"/>
+</div>
 
 - Mỗi thuật toán được chạy trong chức năng "AI Battle!" trên hàng loạt bản đồ ngẫu nhiên, đo lường hiệu quả về điểm số và thời gian chạy. Kết quả cho thấy:
 
